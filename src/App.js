@@ -3,6 +3,9 @@ import useSupercluster from 'use-supercluster';
 import useSWR from 'swr';
 import ReactMapGL, { Marker, Popup, FlyToInterpolator } from 'react-map-gl';
 
+import PinDescription from './PinDescription';
+import MarkerButton from './MarkerButton';
+
 import './App.css';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -18,29 +21,59 @@ function App() {
 
   const mapRef = useRef();
 
-  // const [items, setMarkers] = useState(null);
-  // const [isLoading, setLoading] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedPin, setSelectedPin] = useState(null);
 
   const url = 'https://dev.vozilla.pl/api-client-portal/map?objectType=VEHICLE&objectType=POI&objectType=PARKING';
 
   const { data, error }  = useSWR(url, fetcher);
-  const items = data && !error ? data.objects : [];
-  const geojson = items.map((item) => ({
-    type: 'Feature',
-    properties: {
-      cluster: false,
-      itemId: item.id,
-      itemType: item.discriminator,
-    },
-    geometry: {
-      type: 'Point',
-      coordinates: [
-        item.location.longitude, 
-        item.location.latitude
-      ],
-    },
-  }));
+  const pins = data && !error ? data.objects : [];
+  const geojson = pins.map((pin) => {
+    let details;
+
+    switch (pin.discriminator) {
+      case 'vehicle':
+        details = {
+          vehicleType: pin.type,
+          availability: pin.status,
+          batteryLevel: pin.batteryLevelPct,
+          platesNumber: pin.platesNumber,
+        }
+        break;
+      case 'parking':
+        details = {
+          description: pin.description,
+          address: `${pin.address.street} ${pin.address.house}, ${pin.address.city}`,
+          availableSpacesCount: pin.availableSpacesCount,
+        }
+        break;
+      case 'poi':
+        details = {
+          description: pin.description,
+          category: pin.category,
+        }
+        break;
+      default:
+        details = {}
+    }
+
+    return {
+      type: 'Feature',
+      properties: {
+        cluster: false,
+        pinId: pin.id,
+        pinName: pin.name,
+        pinType: pin.discriminator,
+        details,
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [
+          pin.location.longitude, 
+          pin.location.latitude
+        ],
+      },
+    }
+  });
 
   const bounds = mapRef.current
     ? mapRef.current
@@ -71,7 +104,7 @@ function App() {
         const { 
           cluster: isCluster,
           cluster_id: clusterId,
-          point_count: itemsCount 
+          point_count: pinsCount 
         } = cluster.properties;
 
         if (isCluster) {
@@ -84,8 +117,8 @@ function App() {
               <div
                 className='marker-cluster'
                 style={{
-                  width: `${30 + (itemsCount / geojson.length) * 60}px`,
-                  height: `${30 + (itemsCount / geojson.length) * 60}px`
+                  width: `${30 + (pinsCount / geojson.length) * 60}px`,
+                  height: `${30 + (pinsCount / geojson.length) * 60}px`
                 }}
                 onClick={() =>{
                   const expansionZoom = Math.min(
@@ -102,58 +135,37 @@ function App() {
                     })
                 }}
               >
-                {itemsCount}
+                {pinsCount}
               </div>
             </Marker>
           );
         }
 
+        const iconClickHandler = (event) => {
+          event.preventDefault();
+          setSelectedPin(cluster);
+        }
+
         return (
           <Marker
-            key={cluster.properties.itemId}
+            key={cluster.properties.pinId}
             latitude={latitude}
             longitude={longitude}
-        >
-            {cluster.properties.itemType === 'vehicle' ? (
-              <button className="marker-btn" onClick={(event => {
-                event.preventDefault();
-                setSelectedItem(cluster);
-                console.log(selectedItem)
-              })}>
-                <img src="/car.png" alt="Car Icon"/>
-              </button>
-            ) : null}
-
-            {cluster.properties.itemType === 'parking' ? (
-              <button className="marker-btn">
-                <img src="/parking.png" alt="Car Icon"/>
-              </button>
-            ) : null}
-
-            {cluster.properties.itemType === 'poi' ? (
-              <button className="marker-btn">
-                <img src="/magnifying-glass.png" alt="Car Icon"/>
-              </button>
-            ) : null}
-        </Marker>
+          >
+            <MarkerButton pin={cluster} clickHandler={iconClickHandler} />   
+          </Marker>
         );
       })}
       
-      {selectedItem ? (
+      {selectedPin ? (
         <Popup
-          latitude={52.114503}
-          longitude={19.423561}
+          latitude={selectedPin.geometry.coordinates[1]}
+          longitude={selectedPin.geometry.coordinates[0]}
           onClose={() => {
-            setSelectedItem(null);
+            setSelectedPin(null);
           }}
         >
-          <div>
-            <h2>{selectedItem.name}</h2>
-            <ul>
-              <li>Status: {selectedItem.status === 'AVAILABLE' ? 'Dostępny' : 'Niedostępny'}</li>
-              <li>Poziom baterii: {selectedItem.batteryLevelPct}%</li>
-            </ul>
-          </div>
+          <PinDescription pin={selectedPin} />
         </Popup>
       ) : null}
     </ReactMapGL>
