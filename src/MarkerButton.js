@@ -1,9 +1,9 @@
 import React from 'react';
 
 function MarkerButton(props) {
-  const { pinType } = props.pin.properties;
+  const { objectType } = props.pin.properties;
 
-  if (pinType === 'vehicle') {
+  if (objectType === 'vehicle') {
     return (
       <button className="marker-btn" onClick={props.clickHandler}>
         <img src="/car.png" alt="Car icon"/>
@@ -11,7 +11,7 @@ function MarkerButton(props) {
     );
   }
 
-  if (pinType === 'parking') {
+  if (objectType === 'parking') {
     return (
       <button className="marker-btn" onClick={props.clickHandler}>
         <img src="/parking.png" alt="Parking icon"/>
@@ -19,7 +19,7 @@ function MarkerButton(props) {
     );
   }
 
-  if (pinType === 'poi') {
+  if (objectType === 'poi') {
     return (
       <button className="marker-btn" onClick={props.clickHandler}>
         <img src="/magnifying-glass.png" alt="Magnifying glass icon"/>
