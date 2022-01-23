@@ -1,18 +1,19 @@
 import React from 'react';
 
-function PinDescription(props) {
-  const { pinType, pinName } = props.pin.properties;
+function PinDescription({ object }) {
+  console.log(object)
+  const { objectType, objectName } = object.properties;
 
-  if (pinType === 'vehicle') {
+  if (objectType === 'vehicle') {
     const {
       availability,
       batteryLevel,
       platesNumber,
-    } = props.pin.properties.details;
+    } = object.details;
   
     return (
       <div>
-        <h2>{pinName}</h2>
+        <h2>{objectName}</h2>
         <ul>
           <li><span>Status:</span> {availability === 'AVAILABLE' ? 'Dostępny' : 'Niedostępny'}</li>
           <li><span>Poziom baterii:</span> {batteryLevel}%</li>
@@ -22,12 +23,12 @@ function PinDescription(props) {
     );
   }
 
-  if (pinType === 'parking') {
+  if (objectType === 'parking') {
     const {
       description,
       address,
       availableSpacesCount,
-    } = props.pin.properties.details;
+    } = object.details;
     return (
       <div>
         <h2>Parking</h2>
@@ -40,14 +41,14 @@ function PinDescription(props) {
     );
   }
 
-  if (pinType === 'poi') {
+  if (objectType === 'poi') {
     const {
       description,
       category,
-    } = props.pin.properties.details;
+    } = object.details;
     return (
       <div>
-        <h2>{pinName}</h2>
+        <h2>{objectName}</h2>
         <p>{description}</p>
         <ul>
           <li>Kategoria: {category}</li>

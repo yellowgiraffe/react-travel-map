@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { ApiDataContext } from './context/ApiDataContext';
-import { FilterContext } from './context/FilterContext';
+import { ApiDataContext } from '../context/ApiDataContext';
+import { FilterContext } from '../context/FilterContext';
 
 function ControlPanel() {
 

@@ -2,11 +2,11 @@ import React, { useState, useRef, useContext } from 'react';
 import ReactMapGL, { Marker, Popup, FlyToInterpolator } from 'react-map-gl';
 import useSupercluster from 'use-supercluster';
 
-import { FilterContext } from './context/FilterContext';
+import { FilterContext } from '../context/FilterContext';
 
 import PinDescription from './PinDescription';
-import MarkerButton from './MarkerButton';
-import convertToGeojson from './utils/convertToGeojson';
+import Markers from './markers/Markers';
+import convertToGeojson from '../utils/convertToGeojson';
 
 
 
@@ -68,8 +68,8 @@ const Map = () => {
               <div
                 className='marker-cluster'
                 style={{
-                  width: `${30 + (pinsCount / geojsonData.length) * 60}px`,
-                  height: `${30 + (pinsCount / geojsonData.length) * 60}px`
+                  width: `${30 + (pinsCount / geojsonData.length) * 50}px`,
+                  height: `${30 + (pinsCount / geojsonData.length) * 50}px`
                 }}
                 onClick={() =>{
                   const expansionZoom = Math.min(
@@ -103,7 +103,7 @@ const Map = () => {
             latitude={latitude}
             longitude={longitude}
           >
-            <MarkerButton pin={cluster} clickHandler={iconClickHandler} />   
+            <Markers object={cluster} onClick={iconClickHandler}/> 
           </Marker>
         );
       })}
@@ -116,7 +116,7 @@ const Map = () => {
             setSelectedPin(null);
           }}
         >
-          <PinDescription pin={selectedPin} />
+          <PinDescription object={selectedPin} />
         </Popup>
       ) : null}
     </ReactMapGL>
