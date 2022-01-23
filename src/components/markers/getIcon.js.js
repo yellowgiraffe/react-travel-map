@@ -44,7 +44,7 @@ export const getParkingIcon = () => {
 };
 
 export const getPoiIcon = (poiCategory) => {
-  const category = poiCategory.toLowerCase;
+  const category = poiCategory.toLowerCase();
 
   if (category === 'ciekawe miejsca') {
     return {
@@ -71,4 +71,4 @@ export const getPoiIcon = (poiCategory) => {
     src: 'assets/magnifying-glass.png',
     alt: 'Parking icon'
   }
-}
+};

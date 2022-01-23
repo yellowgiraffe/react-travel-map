@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-const VehicleCard = ({ vehicle }) => {
+import { PopupContext } from '../../../context/PopupContext';
+
+const VehicleCard = () => {
+  const { selected: vehicle } = useContext(PopupContext);
   const { objectName } = vehicle.properties;
   const {
     availability,
@@ -20,6 +23,6 @@ const VehicleCard = ({ vehicle }) => {
       </ul>
     </div>
   );
-}
+};
 
 export default VehicleCard;

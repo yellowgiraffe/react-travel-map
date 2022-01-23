@@ -1,6 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
+import { PopupContext } from '../../../context/PopupContext';
 
-const ParkingCard = ({ parking }) => {
+const ParkingCard = () => {
+  const { selected: parking } = useContext(PopupContext);
   const {
     description,
     address,
@@ -15,7 +17,11 @@ const ParkingCard = ({ parking }) => {
       <h3>{description}</h3>
       <ul>
         <li><span>Adres parkingu:</span> {address}</li>
-        <li><span>Dostępne miejsca parkingowe:</span> {availableSpacesCount}/{totalSpaces}</li>
+        <li>
+          <span>
+            Dostępne miejsca parkingowe: 
+          </span> {availableSpacesCount}/{totalSpaces}
+        </li>
       </ul>
     </div>
   );

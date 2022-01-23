@@ -2,7 +2,7 @@ import React from 'react';
 
 import { getParkingIcon } from '../getIcon.js';
 
-const ParkingMarker = ({ parking }) => {
+const ParkingMarker = () => {
   const { src, alt } = getParkingIcon();
 
   return (

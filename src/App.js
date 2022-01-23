@@ -1,8 +1,9 @@
 import React from 'react';
 import { SWRConfig } from 'swr';
 
-import { FilterContextProvider } from './context/FilterContext';
 import { ApiDataProvider } from './context/ApiDataContext';
+import { FilterContextProvider } from './context/FilterContext';
+import { PopupContextProvider } from './context/PopupContext';
 
 import Map from './components/Map';
 import ControlPanel from './components/ControlPanel';
@@ -14,7 +15,9 @@ function App() {
     <SWRConfig value={{ revalidateOnFocus: false, fetcher }}>
           <ApiDataProvider>
             <FilterContextProvider>
-              <Map />
+              <PopupContextProvider>
+                <Map />
+              </PopupContextProvider>
               <ControlPanel />
             </FilterContextProvider>
           </ApiDataProvider>

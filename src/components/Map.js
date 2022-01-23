@@ -1,11 +1,11 @@
 import React, { useState, useRef, useContext } from 'react';
-import ReactMapGL, { Marker, Popup, FlyToInterpolator } from 'react-map-gl';
+import ReactMapGL, { Marker, FlyToInterpolator } from 'react-map-gl';
 import useSupercluster from 'use-supercluster';
 
 import { FilterContext } from '../context/FilterContext';
+import { PopupContext } from '../context/PopupContext';
 import convertToGeojson from '../utils/convertToGeojson';
 
-import PinDescription from './PinDescription';
 import Markers from './markers/Markers';
 import PopupCard from './markers/PopupCard';
 
@@ -13,7 +13,7 @@ import PopupCard from './markers/PopupCard';
 
 const Map = () => {
   const { filtered } = useContext(FilterContext);
-  const [selectedPin, setSelectedPin] = useState(null);
+  const { selected } = useContext(PopupContext)
   const [viewport, setViewport] = useState({
     latitude: 52.114503,
     longitude: 19.423561,
@@ -40,8 +40,6 @@ const Map = () => {
     zoom: viewport.zoom,
     options: { radius: 75, maxZoom: 20 },
   });
-
- 
 
   return (
     <ReactMapGL
@@ -83,7 +81,7 @@ const Map = () => {
                       latitude,
                       longitude,
                       zoom: expansionZoom,
-                      transitionInterpolator: new FlyToInterpolator({ speed: 3 }),
+                      transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
                       transitionDuration: 'auto',
                     })
                 }}
@@ -94,38 +92,20 @@ const Map = () => {
           );
         }
 
-        const iconClickHandler = (event) => {
-          event.preventDefault();
-          setSelectedPin(cluster);
-        }
-
         return (
           <Marker
             key={cluster.properties.pinId}
             latitude={latitude}
             longitude={longitude}
           >
-            <Markers object={cluster} onClick={iconClickHandler}/> 
+            <Markers object={cluster} /> 
           </Marker>
         );
       })}
 
-      {selectedPin ? <PopupCard selected={selectedPin} /> : null}
-      
-      {/* {selectedPin ? (
-        <Popup
-          latitude={selectedPin.geometry.coordinates[1]}
-          longitude={selectedPin.geometry.coordinates[0]}
-          onClose={() => {
-            setSelectedPin(null);
-          }}
-        >
-          <PinDescription selectedMarker={selectedPin} />
-        </Popup>
-      ) : null} */}
+      {selected ? <PopupCard /> : null}
     </ReactMapGL>
   );
-  
 };
 
 export default Map;

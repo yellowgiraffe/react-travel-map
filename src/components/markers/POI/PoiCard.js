@@ -1,6 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
-const PoiCard = ({ poi }) => {
+import { PopupContext } from '../../../context/PopupContext';
+
+const PoiCard = () => {
+  const { selected: poi } = useContext(PopupContext);
   const { objectName } = poi.properties;
   const {
     description,
@@ -9,7 +12,6 @@ const PoiCard = ({ poi }) => {
     category,
   } = poi.details;
 
-  console.log(address.length)
   return (
     <div className="card-content">
       <h2>{objectName}</h2>
