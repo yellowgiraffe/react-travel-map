@@ -2,6 +2,7 @@ body {
   margin: 0;
   font-family: Inter, sans-serif;
   font-size: 14px;
+  color: #6b6b76;
 }
 
 .marker-btn {
@@ -31,14 +32,16 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  max-width: 320px;
+  max-width: 220px;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   padding: 12px 24px;
   margin: 20px;
-  font-size: 14px;
-  color: #6b6b76;
   outline: none;
+}
+
+.control-panel__nested-list {
+  padding-left: 20px;
 }
 
 
@@ -47,13 +50,38 @@ body {
   padding: 25px 20px;
 }
 
-.mapboxgl-popup-content ul{
+.control-panel__list {
   padding-left: 0;
 }
-.mapboxgl-popup-content li{
+
+.control-panel__list li {
   list-style: none; 
 }
 
-.mapboxgl-popup-content span {
+.card-content h2
+.control-panel h2 {
+  color: #454555;
+}
+
+.card-content h2 {
+  margin-bottom: 5px;
+}
+
+.card-content h3 {
+  margin: 0 0 20px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.card-content ul {
+  padding-left: 0;
+}
+
+.card-content li {
+  list-style: none; 
+  padding-bottom: 5px;
+}
+
+.card-content span {
   font-weight: 700;
 }

@@ -1,15 +1,18 @@
 import React from 'react';
 
-const VehicleInfo = ({ pin }) => {
+const VehicleCard = ({ vehicle }) => {
+  const { objectName } = vehicle.properties;
   const {
     availability,
     batteryLevel,
     platesNumber,
-  } = pin.properties.details;
+    vehicleType,
+  } = vehicle.details;
 
   return (
-    <div>
-      <h2>{pin.propertiesobjectName}</h2>
+    <div className="card-content">
+      <h2>{objectName}</h2>
+      <h3>{vehicleType === 'CAR' ? 'Samochód osobowy' : 'Samochód ciężarowy'}</h3>
       <ul>
         <li><span>Status:</span> {availability === 'AVAILABLE' ? 'Dostępny' : 'Niedostępny'}</li>
         <li><span>Poziom baterii:</span> {batteryLevel}%</li>
@@ -19,4 +22,4 @@ const VehicleInfo = ({ pin }) => {
   );
 }
 
-export default VehicleInfo;
+export default VehicleCard;

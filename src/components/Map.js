@@ -3,15 +3,17 @@ import ReactMapGL, { Marker, Popup, FlyToInterpolator } from 'react-map-gl';
 import useSupercluster from 'use-supercluster';
 
 import { FilterContext } from '../context/FilterContext';
+import convertToGeojson from '../utils/convertToGeojson';
 
 import PinDescription from './PinDescription';
 import Markers from './markers/Markers';
-import convertToGeojson from '../utils/convertToGeojson';
+import PopupCard from './markers/PopupCard';
 
 
 
 const Map = () => {
   const { filtered } = useContext(FilterContext);
+  const [selectedPin, setSelectedPin] = useState(null);
   const [viewport, setViewport] = useState({
     latitude: 52.114503,
     longitude: 19.423561,
@@ -19,8 +21,6 @@ const Map = () => {
     width: '100vw',
     height: '100vh',
   });
-
-  const [selectedPin, setSelectedPin] = useState(null);
 
   const mapRef = useRef();
 
@@ -40,6 +40,8 @@ const Map = () => {
     zoom: viewport.zoom,
     options: { radius: 75, maxZoom: 20 },
   });
+
+ 
 
   return (
     <ReactMapGL
@@ -107,8 +109,10 @@ const Map = () => {
           </Marker>
         );
       })}
+
+      {selectedPin ? <PopupCard selected={selectedPin} /> : null}
       
-      {selectedPin ? (
+      {/* {selectedPin ? (
         <Popup
           latitude={selectedPin.geometry.coordinates[1]}
           longitude={selectedPin.geometry.coordinates[0]}
@@ -116,9 +120,9 @@ const Map = () => {
             setSelectedPin(null);
           }}
         >
-          <PinDescription object={selectedPin} />
+          <PinDescription selectedMarker={selectedPin} />
         </Popup>
-      ) : null}
+      ) : null} */}
     </ReactMapGL>
   );
   

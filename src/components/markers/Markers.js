@@ -5,7 +5,7 @@ import ParkingMarker from './Parkings/ParkingMarker';
 import PoiMarker from './POI/PoiMarker';
 
 const Markers = ({ object, onClick }) => {
-  const { objectType } = object.properties
+  const { objectType } = object.properties;
 
   return (
     <button className="marker-btn" onClick={onClick}>

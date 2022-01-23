@@ -33,8 +33,9 @@ const convertToGeojson = (json) => {
       case 'parking':
         details = {
           description: object.description,
-          address: `${object.address.street} ${object.address.house}, ${object.address.city}`,
+          address: `${object.address.street || ''} ${object.address.house || ''}, ${object.address.city || ''}`,
           availableSpacesCount: object.availableSpacesCount,
+          totalSpaces: object.spacesCount,
         };
         return {
           type: 'Feature',
@@ -47,6 +48,8 @@ const convertToGeojson = (json) => {
         details = {
           description: object.description,
           category: object.category,
+          address: `${object.address.street || ''} ${object.address.house || ''}`,
+          city: object.address.city || '',
         };
         return{
           type: 'Feature',

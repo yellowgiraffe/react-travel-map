@@ -12,11 +12,26 @@ export const ApiDataProvider = ({ children }) => {
   if(error) console.log(error);
 
   const apiData = data && !error ? data.objects : [];
+
   const categories = [...new Set(apiData.map((object) => object.discriminator))];
+  
   const vehicles = apiData.filter((object) => object.discriminator === 'vehicle');
   const parkings = apiData.filter((object) => object.discriminator === 'parking');
   const poi = apiData.filter((object) => object.discriminator === 'poi');
+  
+  // const categories2 = {
+  //   vehicle: ['availableVehicles'],
+  //   parking: [],
+  //   poi: ['places','trainStations', 'gnomes']
+  // }
 
+  // const sorted = [
+  //   ['vehicle', vehicles],
+  //   ['parking', parkings],
+  //   ['poi', poi],
+  // ];
+
+  // console.log(sorted[0])
   return (
     <ApiDataContext.Provider value={{
       objects: apiData,
