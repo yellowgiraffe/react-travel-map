@@ -5,54 +5,99 @@ import { ApiDataContext } from './ApiDataContext';
 export const FilterContext = createContext();
 
 export const FilterContextProvider = ({ children }) => {
-  const { objects, vehicles, poi, categories } = useContext(ApiDataContext);
-  const [checked, setChecked] = useState([
-    ...categories,
-    'places',
-    'trainStations',
-    'gnomes'
-  ]);
-  const [filtered, setFiltered] = useState(objects.filter((object) => (
-    checked.includes(object.discriminator)
-  )));
+  const { objects, categories, freeVehicles } = useContext(ApiDataContext);
 
-  const availableVehicles = vehicles.filter((vehicle) => vehicle.status === 'AVAILABLE');
-  const places = poi.filter((station) => station.category === 'Ciekawe miejsca');
-  const trainStations = poi.filter((station) => station.category === 'Stacje kolejowe');
-  const gnomes = poi.filter((gnome) => gnome.category === 'Krasnale');
+  const [filtered, setFiltered] = useState(objects);
+  const [checkedAllPoi, setCheckedAllPoi] = useState(true);
+  const [availableVehicles, setAvailableVehicles] = useState(false);
+  const [checked, setChecked] = useState({
+    vehicles: true,
+    parkings: true,
+    places: true,
+    trainStations: true,
+    gnomes: true,
+  });
 
-  useEffect(() =>{
-    setFiltered(objects.filter((object) => checked.includes(object.discriminator)));
-  }, [objects, checked]);
+  useEffect(() => {
+    if (availableVehicles) categories.vehicles = freeVehicles;
 
-  const checkboxCategoryHandler = (event) => {
-    const checkboxValue = event.target.value
-    const isCheckedCategory = checked.find((category) => category === checkboxValue);
+    let newFiltered = []
+    Object.keys(checked).forEach((category) => {
+      if (checked[category]) {
+        newFiltered.push(...categories[category])
+      }
+    });
 
-    if (isCheckedCategory) {
-      setChecked(checked.filter((category) => category !== checkboxValue));
+
+    setFiltered(newFiltered);
+
+    if (checked.places || checked.trainStations || checked.gnomes) {
+      setCheckedAllPoi(true)
     } else {
-      setChecked([...checked, checkboxValue]);
+      setCheckedAllPoi(false)
     }
-  };
+  }, [checked, categories, freeVehicles, availableVehicles]);
+
+  const checkboxHandler = (event) => {
+    const checkboxValue = event.target.value;
+    if (checked[checkboxValue]) {
+      setChecked((prev) => {
+        return {
+          ...prev,
+          [checkboxValue]: false,
+        }
+      })
+    } else {
+      setChecked((prev) => {
+        return {
+          ...prev,
+          [checkboxValue]: true,
+        }
+      })
+    }
+  }
+
+  const poiAllHandler = () => {
+    if (checkedAllPoi) {
+      setChecked((prev) => {
+        return {
+          ...prev,
+          places: false,
+          trainStations: false,
+          gnomes: false,
+        }
+      });
+      setCheckedAllPoi(false)
+    } else {
+      setChecked((prev) => {
+        return {
+          ...prev,
+          places: true,
+          trainStations: true,
+          gnomes: true,
+        }
+      });
+      setCheckedAllPoi(true)
+    }
+  }
+
+  const availableVehiclesHandler = () => {
+    if (availableVehicles) { setAvailableVehicles(false); }
+    else { setAvailableVehicles(true); }
+  }
+
 
   return (
     <FilterContext.Provider value={{
       filtered,
       checked,
-      checkboxCategoryHandler}}>
+      checkedAllPoi,
+      availableVehicles,
+      checkboxHandler,
+      poiAllHandler,
+      availableVehiclesHandler,
+    }}>
       {children}
     </FilterContext.Provider>
   );
 }
-
-
-// CATEGORIES
-//// VEHICLE
-//////// AVAILABLE
-//// PARKINGS
-//////// EMPTY PLACES
-//// POI
-//////// CIEKAWE MIEJSCA
-//////// STACJE KOLEJOWE
-//////// KRASNALE

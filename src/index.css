@@ -58,6 +58,14 @@ body {
   list-style: none; 
 }
 
+.control-panel__category {
+  margin-bottom: 10px;
+}
+
+.control-panel__category ul {
+  padding-left: 20px;
+}
+
 .card-content h2
 .control-panel h2 {
   color: #454555;
