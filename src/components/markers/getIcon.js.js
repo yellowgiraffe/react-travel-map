@@ -6,42 +6,50 @@ export const getCarIcon = (vehicleType, vehicleStatus) => {
     if (status === 'available') {
       return {
         src: 'assets/truck-green.png',
-        alt: 'Free truck icon'
-      }
-    } else {
-      return {
-        src: 'assets/truck-red.png',
-        alt: 'Busy truck icon'
-      }
+        alt: 'Free truck icon',
+        width: '52px',
+        height: '52px',
+      };
     }
+    return {
+      src: 'assets/truck-red.png',
+      alt: 'Busy truck icon',
+      width: '52px',
+      height: '52px',
+    };
   }
 
   if (type === 'car') {
     if (status === 'available') {
       return {
         src: 'assets/car-green.png',
-        alt: 'Free car icon'
-      }
-    } else {
-      return {
-        src: 'assets/car-red.png',
-        alt: 'Busy car icon'
-      }
+        alt: 'Free car icon',
+        width: '52px',
+        height: '52px',
+      };
     }
+    return {
+      src: 'assets/car-red.png',
+      alt: 'Busy car icon',
+      width: '52px',
+      height: '52px',
+    };
   }
 
   return {
     src: 'assets/car-green.png',
-    alt: 'Free car icon'
-  }
+    alt: 'Free car icon',
+    width: '52px',
+    height: '52px',
+  };
 };
 
-export const getParkingIcon = () => {
-  return {
-    src: 'assets/parking.png',
-    alt: 'Parking icon'
-  }
-};
+export const getParkingIcon = () => ({
+  src: 'assets/parking.png',
+  alt: 'Parking icon',
+  width: '42px',
+  height: '42px',
+});
 
 export const getPoiIcon = (poiCategory) => {
   const category = poiCategory.toLowerCase();
@@ -49,26 +57,34 @@ export const getPoiIcon = (poiCategory) => {
   if (category === 'ciekawe miejsca') {
     return {
       src: 'assets/magnifying-glass.png',
-      alt: 'Parking icon'
-    }
+      alt: 'Magnifying glass icon',
+      width: '42px',
+      height: '42px',
+    };
   }
 
   if (category === 'stacje kolejowe') {
     return {
       src: 'assets/train.png',
-      alt: 'Parking icon'
-    }
+      alt: 'Railway station icon',
+      width: '34px',
+      height: '34px',
+    };
   }
 
   if (category === 'krasnale') {
     return {
       src: 'assets/gnome.png',
-      alt: 'Parking icon'
-    }
+      alt: 'Gnome icon',
+      width: '42px',
+      height: '42px',
+    };
   }
 
   return {
     src: 'assets/magnifying-glass.png',
-    alt: 'Parking icon'
-  }
+    alt: 'Magnifying glass icon',
+    width: '42px',
+    height: '42px',
+  };
 };

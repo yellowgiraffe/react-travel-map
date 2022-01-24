@@ -5,11 +5,11 @@ export const ApiDataContext = createContext();
 
 export const ApiDataProvider = ({ children }) => {
   const url = 'https://dev.vozilla.pl/api-client-portal/map?objectType=VEHICLE&objectType=POI&objectType=PARKING';
- 
-  const { data, error }  = useSWR(url);
-  if(!data) return <div>Loading...</div>;
-  if(!data) return null;
-  if(error) console.log(error);
+
+  const { data, error } = useSWR(url);
+  if (!data) return <div>Loading...</div>;
+  if (!data) return null;
+  if (error) console.log(error);
 
   const apiData = data && !error ? data.objects : [];
 
@@ -27,14 +27,15 @@ export const ApiDataProvider = ({ children }) => {
     places,
     trainStations,
     gnomes,
-  }
-  
+  };
+
   return (
     <ApiDataContext.Provider value={{
       objects: apiData,
       categories,
       freeVehicles,
-    }}>
+    }}
+    >
       {children}
     </ApiDataContext.Provider>
   );

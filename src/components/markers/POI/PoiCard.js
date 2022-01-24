@@ -17,12 +17,24 @@ const PoiCard = () => {
       <h2>{objectName}</h2>
       <h3>{description}</h3>
       <ul>
-        <li><span>Kategoria:</span> {category}</li>
-        <li><span>Adres:</span> {address === ' ' ? 'Nieznany' : address}</li>
-        <li><span>Miasto:</span> {city}</li>
+        <li>
+          <span>Kategoria:</span>
+          {' '}
+          {category}
+        </li>
+        <li>
+          <span>Adres:</span>
+          {' '}
+          {address === ' ' ? 'Nieznany' : address}
+        </li>
+        <li>
+          <span>Miasto:</span>
+          {' '}
+          {city}
+        </li>
       </ul>
     </div>
   );
-}
+};
 
 export default PoiCard;

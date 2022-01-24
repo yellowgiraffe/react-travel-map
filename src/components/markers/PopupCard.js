@@ -10,7 +10,7 @@ import { PopupContext } from '../../context/PopupContext';
 const PopupCard = () => {
   const { selected, setSelected } = useContext(PopupContext);
   const { objectType } = selected.properties;
-  
+
   return (
     <Popup
       latitude={selected.geometry.coordinates[1]}
@@ -24,6 +24,6 @@ const PopupCard = () => {
       {objectType === 'poi' && <PoiCard />}
     </Popup>
   );
-}
+};
 
 export default PopupCard;

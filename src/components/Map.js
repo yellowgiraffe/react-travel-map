@@ -9,11 +9,9 @@ import convertToGeojson from '../utils/convertToGeojson';
 import Markers from './markers/Markers';
 import PopupCard from './markers/PopupCard';
 
-
-
 const Map = () => {
   const { filtered } = useContext(FilterContext);
-  const { selected } = useContext(PopupContext)
+  const { selected } = useContext(PopupContext);
   const [viewport, setViewport] = useState({
     latitude: 52.114503,
     longitude: 19.423561,
@@ -28,23 +26,23 @@ const Map = () => {
 
   const bounds = mapRef.current
     ? mapRef.current
-        .getMap()
-        .getBounds()
-        .toArray()
-        .flat()
+      .getMap()
+      .getBounds()
+      .toArray()
+      .flat()
     : null;
 
   const { clusters, supercluster } = useSupercluster({
     points: geojsonData,
     bounds,
     zoom: viewport.zoom,
-    options: { radius: 75, maxZoom: 20 },
+    options: { radius: 75, maxZoom: 22 },
   });
 
   return (
     <ReactMapGL
-      { ...viewport }
-      maxZoom={20}
+      {...viewport}
+      maxZoom={22}
       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
       mapStyle="mapbox://styles/yellowgiraffe/ckykigt3e6m1b15o88wu23ks4"
       onViewportChange={(viewport) => setViewport(viewport)}
@@ -52,10 +50,10 @@ const Map = () => {
     >
       {clusters.length && clusters.map((cluster) => {
         const [longitude, latitude] = cluster.geometry.coordinates;
-        const { 
+        const {
           cluster: isCluster,
           cluster_id: clusterId,
-          point_count: pinsCount 
+          point_count: pinsCount,
         } = cluster.properties;
 
         if (isCluster) {
@@ -66,24 +64,25 @@ const Map = () => {
               longitude={longitude}
             >
               <div
-                className='marker-cluster'
+                role="presentation"
+                className="marker-cluster"
                 style={{
                   width: `${30 + (pinsCount / geojsonData.length) * 50}px`,
-                  height: `${30 + (pinsCount / geojsonData.length) * 50}px`
+                  height: `${30 + (pinsCount / geojsonData.length) * 50}px`,
                 }}
-                onClick={() =>{
+                onClick={() => {
                   const expansionZoom = Math.min(
                     supercluster.getClusterExpansionZoom(clusterId),
-                    20
-                    );
-                    setViewport({
-                      ...viewport,
-                      latitude,
-                      longitude,
-                      zoom: expansionZoom,
-                      transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
-                      transitionDuration: 'auto',
-                    })
+                    20,
+                  );
+                  setViewport({
+                    ...viewport,
+                    latitude,
+                    longitude,
+                    zoom: expansionZoom,
+                    transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
+                    transitionDuration: 'auto',
+                  });
                 }}
               >
                 {pinsCount}
@@ -98,7 +97,7 @@ const Map = () => {
             latitude={latitude}
             longitude={longitude}
           >
-            <Markers object={cluster} /> 
+            <Markers object={cluster} />
           </Marker>
         );
       })}
@@ -109,4 +108,3 @@ const Map = () => {
 };
 
 export default Map;
-

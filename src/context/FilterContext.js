@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext, useContext, useEffect, useState,
+} from 'react';
 
 import { ApiDataContext } from './ApiDataContext';
 
@@ -21,71 +23,60 @@ export const FilterContextProvider = ({ children }) => {
   useEffect(() => {
     if (availableVehicles) categories.vehicles = freeVehicles;
 
-    let newFiltered = []
+    const newFiltered = [];
     Object.keys(checked).forEach((category) => {
       if (checked[category]) {
-        newFiltered.push(...categories[category])
+        newFiltered.push(...categories[category]);
       }
     });
-
 
     setFiltered(newFiltered);
 
     if (checked.places || checked.trainStations || checked.gnomes) {
-      setCheckedAllPoi(true)
+      setCheckedAllPoi(true);
     } else {
-      setCheckedAllPoi(false)
+      setCheckedAllPoi(false);
     }
   }, [checked, categories, freeVehicles, availableVehicles]);
 
   const checkboxHandler = (event) => {
     const checkboxValue = event.target.value;
     if (checked[checkboxValue]) {
-      setChecked((prev) => {
-        return {
-          ...prev,
-          [checkboxValue]: false,
-        }
-      })
+      setChecked((prev) => ({
+        ...prev,
+        [checkboxValue]: false,
+      }));
     } else {
-      setChecked((prev) => {
-        return {
-          ...prev,
-          [checkboxValue]: true,
-        }
-      })
+      setChecked((prev) => ({
+        ...prev,
+        [checkboxValue]: true,
+      }));
     }
-  }
+  };
 
   const poiAllHandler = () => {
     if (checkedAllPoi) {
-      setChecked((prev) => {
-        return {
-          ...prev,
-          places: false,
-          trainStations: false,
-          gnomes: false,
-        }
-      });
-      setCheckedAllPoi(false)
+      setChecked((prev) => ({
+        ...prev,
+        places: false,
+        trainStations: false,
+        gnomes: false,
+      }));
+      setCheckedAllPoi(false);
     } else {
-      setChecked((prev) => {
-        return {
-          ...prev,
-          places: true,
-          trainStations: true,
-          gnomes: true,
-        }
-      });
-      setCheckedAllPoi(true)
+      setChecked((prev) => ({
+        ...prev,
+        places: true,
+        trainStations: true,
+        gnomes: true,
+      }));
+      setCheckedAllPoi(true);
     }
-  }
+  };
 
   const availableVehiclesHandler = () => {
-    if (availableVehicles) { setAvailableVehicles(false); }
-    else { setAvailableVehicles(true); }
-  }
-
+    if (availableVehicles) { setAvailableVehicles(false); } else { setAvailableVehicles(true); }
+  };
 
   return (
     <FilterContext.Provider value={{
@@ -96,8 +87,9 @@ export const FilterContextProvider = ({ children }) => {
       checkboxHandler,
       poiAllHandler,
       availableVehiclesHandler,
-    }}>
+    }}
+    >
       {children}
     </FilterContext.Provider>
   );
-}
+};

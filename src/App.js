@@ -10,19 +10,17 @@ import ControlPanel from './components/ControlPanel';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-function App() {
-  return (
-    <SWRConfig value={{ revalidateOnFocus: false, fetcher }}>
-          <ApiDataProvider>
-            <FilterContextProvider>
-              <PopupContextProvider>
-                <Map />
-              </PopupContextProvider>
-              <ControlPanel />
-            </FilterContextProvider>
-          </ApiDataProvider>
-    </SWRConfig>
-  );
-}
+const App = () => (
+  <SWRConfig value={{ revalidateOnFocus: false, fetcher }}>
+    <ApiDataProvider>
+      <FilterContextProvider>
+        <PopupContextProvider>
+          <Map />
+        </PopupContextProvider>
+        <ControlPanel />
+      </FilterContextProvider>
+    </ApiDataProvider>
+  </SWRConfig>
+);
 
 export default App;

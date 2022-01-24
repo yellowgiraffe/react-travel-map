@@ -13,15 +13,15 @@ const Markers = ({ object }) => {
   const markerClickHandler = (event) => {
     event.preventDefault();
     setSelected(object);
-  }
+  };
 
   return (
-    <button className="marker-btn" onClick={markerClickHandler}>
+    <button type="button" className="marker-btn" onClick={markerClickHandler}>
       {objectType === 'vehicle' && <VehicleMarker vehicle={object} />}
       {objectType === 'parking' && <ParkingMarker parking={object} />}
       {objectType === 'poi' && <PoiMarker poi={object} />}
     </button>
   );
-}
+};
 
 export default Markers;
